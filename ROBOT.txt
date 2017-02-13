@@ -1,0 +1,54 @@
+#Calculo de los vertices de un poligono regular a partir de su radio y lados
+
+import math #biblioteca
+
+print"POLIGONOOOS!!"
+#Pregunta al cliente los datos
+r=input("Introduzca un radio: ")
+n_lados=input("Introduzca el numero de lados: ")
+print "El radio y el numero de lados son:", r,"y", n_lados
+#calculo del angulo interno y el lado
+alfa=360/n_lados
+print "El angulo alfa mide: ", alfa
+alfarad=math.radians(alfa) #paso a radianes
+lado=2*r*math.sin(alfa/2)
+print "El lado mide: ", lado
+
+#Declaracion de las clases
+class Punto:
+	def __init__(self):#constructor
+		self.x=0
+		self.y=0
+	def valor(self,x,y): #asignacion de valores
+		self.x=x
+		self.y=y
+	def next_punto(self,vector,central_p): #pasa de vector a coord de punto
+		self.x=vector.x+central_p.x
+		self.y=vector.y+central_p.y
+class Vector2D:
+	def __init__(self, punto1, punto2): #constructor
+		self.x=punto2.x-punto1.x
+		self.y=punto2.y-punto1.y
+	def giro(self,angle): #giro del vector cierto angulo
+		x=self.x
+		y=self.y
+		self.x=x*math.cos(angle)-y*math.sin(angle)
+		self.y=x*math.sin(angle)+y*math.cos(angle)
+
+#Declaracion de los puntos
+punto0=Punto()
+punto=[]
+punto0.valor(0,5.5)
+print "El punto central es: ",punto0.x,",",punto0.y
+for n in range(n_lados):
+	punto.append(Punto())
+	if n==0:
+		punto[n].valor(0,5.5+r)
+		print "El punto ",n+1," es: ", punto[n].x,",",punto[n].y
+		vector0=Vector2D(punto0,punto[n])#vector entre puntos
+		#print "El vector es: ",vector0.x,",",vector0.y
+	else:
+		vector0.giro(alfarad)#giro del vector
+		#print "Vector girado: ",vector0.x,",",vector0.y
+		punto[n].next_punto(vector0,punto0)#calculo sig. punto
+		print "El punto ",n+1," es: ",punto[n].x,",",punto[n].y
